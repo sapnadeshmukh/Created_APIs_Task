@@ -9,7 +9,7 @@ const router = express.Router()
 
 // File Upload
 const fileStorage = multer.diskStorage({
-    destination: 'files', // Destination to store image 
+    destination: 'download', // Destination to store image 
     filename: (req, file, cb) => {
         cb(null, file.fieldname + '_' + Date.now() + path.extname(file.originalname))
     }
@@ -55,15 +55,13 @@ const fileUpload = multer({
 }
 
 
-// To file Image
+// To view Image
 module.exports.view_file=(req,res)=> {
     let sql = "SELECT files FROM users WHERE id=" + req.params.id;
     var query = connection.query(sql,(err,data)=>{
         if(err) throw e
-        console.log(data[0])
         const result = Object.values(JSON.parse(JSON.stringify(data[0])));
-        console.log(result[0])
-        res.sendFile(`/home/sapna/Desktop/Created_APIs_Task/files/${result[0]}`)
+        res.sendFile(`/home/sapna/Desktop/Created_APIs_Task/download/${result[0]}`)
 
 
         
@@ -71,6 +69,8 @@ module.exports.view_file=(req,res)=> {
 }
 
 
+
+// To delete File
 module.exports.delete_file=(req,res)=> {
    
 
@@ -82,18 +82,14 @@ module.exports.delete_file=(req,res)=> {
         return console.error(error.message);
     else{
         console.log("data has deleted!!")
+        res.send("data has deleted!")
     }
         
-
-
-        
-    })
+})
 }
 
-// #####################################################################################
+// To download file
 
-
-// File Download
 const fileStore = multer.diskStorage({
     destination: 'download', // Destination to store image 
     filename: (req, file, cb) => {
@@ -101,37 +97,39 @@ const fileStore = multer.diskStorage({
     }
 });
 
-const fileDownload = multer({
+const fileDownload= multer({
     storage: fileStore,
     limits: {
         fileSize: 20000000   // 1000000 Bytes = 1 MB
     },
     fileFilter(req, file, cb) {
         if (!file.originalname.match(/\.(png|jpg|mp4|MPEG-4|pdf)$/)) {     
-            return cb(new Error('Please download a file'))
+            return cb(new Error('Please upload a File'))
         }
         cb(undefined, true)
     }
 })  
-
-module.exports.fileDownload=fileDownload
-
-
-
-
+    module.exports.fileDownload=fileDownload
+    
 module.exports.DownloadFile=(req, res) => {
 
-        // let code=req.body.code
-        // let file=req.body.files
+        let code=req.body.code
+        let file=req.body.files
         let sql = "SELECT files,code FROM users WHERE id=" + req.params.id;
         var query = connection.query(sql,(err,data)=>{
-        if(err) throw e
-            console.log(data)
-            res.send(data)
-        })
-         
-        
+        if(err) throw err
+            const result = Object.values(JSON.parse(JSON.stringify(data[0])));
+            if (code ==result[1] && file==result[0]){
+                console.log("File downloded!!")
+                res.sendFile(`/home/sapna/Desktop/Created_APIs_Task/download/${result[0]}`)
 
+
+            }else{
+                console.log("NO file to download...")
+                res.send("No file to download or incorrect code")
+                
+            }
+        })
 }
 
 
