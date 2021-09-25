@@ -101,6 +101,15 @@ x-large {
     transition: opacity 0.2s ease-in;
     outline: none;
 }
+.buttons .btn-primary{
+    color:#fff;
+}
+
+.btn-dark:hover {
+    color: #fff;
+    background-color: blue;
+    border-color: #1d2124;
+}
 
 .badge {
     font-size: 0.8rem;

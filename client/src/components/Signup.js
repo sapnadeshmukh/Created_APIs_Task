@@ -22,8 +22,7 @@ const config = {
 const body = JSON.stringify({ username, password });
 try{ 
     const res=await axios.post('http://localhost:2323/register/',body,config)
-    console.log(res.data)
-    console.log("working",formData);
+    
 
 }
 catch(error){

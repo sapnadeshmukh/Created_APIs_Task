@@ -13,16 +13,13 @@ module.exports.login= (req, res) => {
         console.log(result)
         
         if(result.length >0){
-            
-                console.log("Login succesfully!!")
-                res.send({
-                    "code":200,
-                    "success":"login sucessfully"
-                })
                 const Data = { username: req.body.username ,password:req.body.password}
                 const accessToken = tokenData(Data, process.env.SECRETKEY)
                 console.log("Token =",accessToken)
-                // res.cookie("key=", accessToken);
+            
+                console.log("Login succesfully!!")
+                res.status(200).json({accessToken})
+                
             }
         else{
             console.log("Email and password does not match")

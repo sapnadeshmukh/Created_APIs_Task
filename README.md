@@ -52,3 +52,28 @@ Next, navigate to the folder where, server.jsfile is located. You can start the 
 -dotenv
 
 
+
+# Frontend 
+
+# required  technologies:
+- ReactJs
+- Html 5
+- CSS 3
+- Bootstrap 4
+
+# Required Dependencies:
+
+- react router dom
+- axios
+- proxy
+
+
+
+To run frontend follow these commands :--
+ 
+
+path=client /README.md:
+
+
+
+

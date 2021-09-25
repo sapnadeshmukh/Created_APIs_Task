@@ -32,15 +32,18 @@ const fileUpload = multer({
     // To store  image in Database
     module.exports.allfile=(req, res) => {
 
-    var token = req.headers.cookie
-    var TOKEN=token.split(';')
-        
+    var token = req.headers.authorization
+    
+    console.log(token);
+
+    
+        console.log(req.body, "ahgoirhgow")
         if(token!=undefined){
-            const data=authenticateToken(TOKEN[0],process.env.SECRETKEY)
+            const data=authenticateToken(token,process.env.SECRETKEY)
             let code=Math.floor(100000 + Math.random() * 900000);
             var query = 'UPDATE users SET files = ?, code =? WHERE id=?';
 
-                connection.query(query,[req.file.filename,code,req.params.id], function (error, result, rows, fields) {
+                connection.query(query,[req.body.file,code,req.params.id], function (error, result, rows, fields) {
                     if(error) throw error
 
                     console.log("file added successfully in DB!!")
