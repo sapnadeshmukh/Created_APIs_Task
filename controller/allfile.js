@@ -1,8 +1,6 @@
 const express = require('express');
 const connection=require('../database/connection')
 const {authenticateToken}=require('../middleware/createToken')
-
-
 const multer = require('multer');
 const path = require('path');
 const router = express.Router()
@@ -34,16 +32,15 @@ const fileUpload = multer({
 
     var token = req.headers.authorization
     
-    console.log(token);
+    console.log("token",token);
 
-    
-        console.log(req.body, "ahgoirhgow")
+        console.log(req.file.filename)
         if(token!=undefined){
             const data=authenticateToken(token,process.env.SECRETKEY)
             let code=Math.floor(100000 + Math.random() * 900000);
             var query = 'UPDATE users SET files = ?, code =? WHERE id=?';
 
-                connection.query(query,[req.body.file,code,req.params.id], function (error, result, rows, fields) {
+                connection.query(query,[req.file.filename,code,req.params.id], function (error, result, rows, fields) {
                     if(error) throw error
 
                     console.log("file added successfully in DB!!")
@@ -64,6 +61,7 @@ module.exports.view_file=(req,res)=> {
     var query = connection.query(sql,(err,data)=>{
         if(err) throw e
         const result = Object.values(JSON.parse(JSON.stringify(data[0])));
+        console.log(result[0])
         res.sendFile(`/home/sapna/Desktop/Created_APIs_Task/download/${result[0]}`)
 
 
@@ -117,7 +115,7 @@ const fileDownload= multer({
 module.exports.DownloadFile=(req, res) => {
 
         let code=req.body.code
-        let file=req.body.files
+        let file=req.body.file
         let sql = "SELECT files,code FROM users WHERE id=" + req.params.id;
         var query = connection.query(sql,(err,data)=>{
         if(err) throw err

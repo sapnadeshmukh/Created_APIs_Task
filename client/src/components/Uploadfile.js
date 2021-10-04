@@ -18,7 +18,7 @@ const Uploadfile = () => {
     };
     const body = JSON.stringify({ file:file});
 
-    const response = await axios.post('http://localhost:2323/uploadfile/11',body,config)
+    const response = await axios.post('http://localhost:2323/uploadfile/12',body,config)
 
 
     }
